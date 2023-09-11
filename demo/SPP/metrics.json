@@ -1,0 +1,13 @@
+{
+"input_si_sdr": -1.1684953272342682,
+"input_sdr": -1.0434510474781646,
+"input_sir": 0.17875567000638126,
+"input_sar": 8.140007265658024,
+"input_stoi": 0.6911651059233512,
+"si_sdr": 13.647799491882324,
+"sdr": 14.354484695605034,
+"sir": 25.469275070930262,
+"sar": 14.72733613577968,
+"stoi": 0.9330809016613226,
+"mix_path": "/home/dangsx/asteroid/egs/librimix/ConvTasNet/LibriMix/LibriMix/Libri2Mix/wav8k/min/test/mix_both/672-122797-0002_7729-102255-0012.wav"
+}
