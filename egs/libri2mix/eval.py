@@ -11,9 +11,9 @@ from pprint import pprint
 from pathlib import Path
 
 from asteroid.metrics import get_metrics
-from asteroid.data.librimix_dataset import LibriMix
+from asteroid.data import LibriMix_noise
 from asteroid.losses import PITLossWrapper, pairwise_neg_sisdr
-from asteroid.models import e2e_noisy_sep_DPRNNTasNet,DPRNNTasNet,e2e_noisy_sep_signal_DPRNNTasNet
+
 from asteroid.models import e2e_noisy_sep_signal_verse_DPRNNTasNet
 from asteroid.models import save_publishable
 from asteroid.utils import tensors_to_device
@@ -41,12 +41,10 @@ parser.add_argument(
 parser.add_argument(
     "--use_gpu", type=int, default=1, help="Whether to use the GPU for model execution"
 )
-#enh_sep_mask_2to6_minus_GM
-#enh_signal_sep_2to6
-# enh_signal_sep_2to6_orilr
-parser.add_argument("--exp_dir", default="exp/diff_e2e/new/enh_signal_sep_2to6_orilr_verse_hvh", help="Experiment root")
+
+parser.add_argument("--exp_dir", default="exp/enh_signal_sep_6to2_orilr_verse_hvh", help="Experiment root")
 parser.add_argument(
-    "--n_save_ex", type=int, default=0, help="Number of audio examples to save, -1 means all"
+    "--n_save_ex", type=int, default=-1, help="Number of audio examples to save, -1 means all"
 )
 parser.add_argument(
     "--compute_wer", type=int, default=0, help="Compute WER using ESPNet's pretrained model"
@@ -105,7 +103,6 @@ def main(conf):
         # Forward the network on the mixture.
         mix, sources, ids = test_set[idx]
         mix, sources = tensors_to_device([mix, sources], device=model_device)
-        # noi_free_st_mask, est_sources = model(mix.unsqueeze(0))
         est_sources,_ = model(mix.unsqueeze(0))
 
         loss,_, reordered_sources = loss_func(est_sources, sources[None], return_est=True)
