@@ -8,13 +8,11 @@ from torch.utils.data import DataLoader
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
-from asteroid.models import dilatedDPRNNTasNet,e2e_noisy_sep_DPRNNTasNet,DPRNNTasNet
-from asteroid.models import e2e_noisy_sep_signal_DPRNNTasNet
 from asteroid.models import e2e_noisy_sep_signal_verse_DPRNNTasNet
 from asteroid.data import LibriMix_noise
 from asteroid.engine.optimizers import make_optimizer
-#system_e2e_noisy system
-from asteroid.engine.system_e2e_signal_noisy_verse import System
+
+from asteroid.engine.system import System
 from asteroid.losses import PITLossWrapper, pairwise_neg_sisdr
 
 # Keys which are not in the conf.yml file can be added here.
@@ -24,7 +22,7 @@ from asteroid.losses import PITLossWrapper, pairwise_neg_sisdr
 # By default train.py will use all available GPUs. The `id` option in run.sh
 # will limit the number of available GPUs for train.py .
 parser = argparse.ArgumentParser()
-parser.add_argument("--exp_dir", default="exp/diff_e2e/new/enh_signal_sep_5to3_orilr_verse_hvh", help="Full path to save best validation model")
+parser.add_argument("--exp_dir", default="exp/enh_signal_sep_6to2_orilr_verse_hvh", help="Full path to save best validation model")
 
 
 def main(conf):
@@ -112,7 +110,6 @@ def main(conf):
         # enable_checkpointing=True,
     )
     trainer.fit(system)
-    # trainer.save_checkpoint(" exp/diff_e2e/new/enh_sep_2to6_baseline_test/example.ckpt")
 
     best_k = {k: v.item() for k, v in checkpoint.best_k_models.items()}
     with open(os.path.join(exp_dir, "best_k_models.json"), "w") as f:
